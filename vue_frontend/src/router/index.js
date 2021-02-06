@@ -2,8 +2,10 @@ import Vue from "vue";
 import Router from "vue-router";
 
 const AddSurvey = () => import("@/views/AddSurvey");
+const Surveys = () => import("@/views/Surveys");
 const TakeSurvey = () => import("@/views/TakeSurvey");
 const Home = () => import("@/components/HelloWorld");
+const Submissions = () => import("@/views/Submissions");
 
 const routes = [
   {
@@ -27,7 +29,7 @@ const routes = [
     ],
   },
   {
-    path: "/take-survey",
+    path: "/surveys",
     component: {
       render(c) {
         return c("router-view");
@@ -36,8 +38,18 @@ const routes = [
     children: [
       {
         path: "",
+        name: "Surveys",
+        component: Surveys,
+      },
+      {
+        path: ":id/take",
         name: "TakeSurvey",
         component: TakeSurvey,
+      },
+      {
+        path: ":id/submissions",
+        name: "Submissions",
+        component: Submissions,
       },
     ],
   },

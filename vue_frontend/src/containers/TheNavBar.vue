@@ -8,7 +8,7 @@
     <b-navbar-nav>
       <b-nav-item :to="{ name: 'Home' }">Home</b-nav-item>
       <b-nav-item :to="{ name: 'AddSurvey' }">Add Survey</b-nav-item>
-      <b-nav-item :to="{ name: 'TakeSurvey' }">Take Survey</b-nav-item>
+      <b-nav-item :to="{ name: 'Surveys' }">Take Survey</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>

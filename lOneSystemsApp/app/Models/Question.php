@@ -11,6 +11,10 @@ class Question extends Model
     protected $guarded = ['id'];  
 
     public function survey(){
-        $this->belongsTo("App\Models\Survey","SurveyId");
+        return $this->belongsTo("App\Models\Survey","SurveyId");
+    }
+
+    public function submissions(){
+        return $this->belongsToMany("App\Models\Submission","answers","QuestionId","SubmissionId")->withPivot("Answer","Note");
     }
 }

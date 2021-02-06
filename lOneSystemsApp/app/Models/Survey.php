@@ -14,4 +14,8 @@ class Survey extends Model
         return $this->hasMany("App\Models\Question","SurveyId");
     }
 
+    public function submissions(){
+        return $this->hasMany("App\Models\Submission","SurveyId");
+    }
+
 }

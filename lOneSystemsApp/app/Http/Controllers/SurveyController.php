@@ -17,6 +17,12 @@ class SurveyController extends Controller
     public function index()
     {
         //
+        $surveys= Survey::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'List of All surveys',
+            'surveys' => $surveys,
+        ]);
     }
 
   

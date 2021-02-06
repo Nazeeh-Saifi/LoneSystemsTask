@@ -1,5 +1,5 @@
 <template>
-  <b-container class="create-product">
+  <b-container>
     <b-row>
       <b-col>
         <b-card header-tag="header" footer-tag="footer" align="left">
@@ -259,7 +259,8 @@ export default {
         .post(this.$apiAdress + "/api/surveys", formData)
         .then(function (response) {
           console.log(response);
-          // self.goBack();
+          //TODO show alert
+          self.goBack();
         })
         .catch(function (error) {
           console.log(error);

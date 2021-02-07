@@ -113,4 +113,40 @@ class SurveyController extends Controller
     {
         //
     }
+
+    /**
+     * 
+     * get survey's first question
+     * @param $SurveyId
+     * @return \Illuminate\Http\Response
+     * 
+     */
+    public function getFirstQuestion($id){
+        $question = Question::where("SurveyId","=",$id)->first();
+        return response()->json([
+            'success' => true,
+            'message' => 'first question',
+            'question' => $question,
+            'id' => $id
+        ]); 
+    }
+
+    public function getNextQuestion($surveyId,$questionId){
+        try {
+            $question = Question::where("SurveyId","=",$surveyId)->findOrFail($questionId);
+            return response()->json([
+                'success' => true,
+                'message' => 'next question',
+                'question' => $question,
+            ]); 
+        }
+        catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
+            return response()->json([
+                'success' => false,
+                'message' => 'end of survey',
+            ]); 
+        }
+        
+
+    }
 }

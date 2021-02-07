@@ -14,7 +14,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
    
@@ -35,9 +35,15 @@ class QuestionController extends Controller
      * @param  \App\Models\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show(Question $question)
+    public function show($id)
     {
         //
+        $question= Question::findOrFail($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'one question',
+            'question' => $question,
+        ]); 
     }
 
     /**

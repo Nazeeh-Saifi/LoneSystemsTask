@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Submission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SubmissionController extends Controller
 {
@@ -15,17 +16,14 @@ class SubmissionController extends Controller
     public function index()
     {
         //
+        $submissions= Submission::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'List of All submissions',
+            'submissions' => $submissions,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,6 +34,26 @@ class SubmissionController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedRequest = $request->validate([
+            "Answers" => "required",
+            "SurveyId" => "required"
+        ]);
+
+        $submission = Submission::create([
+            "Title" => "Submisstion:" .  Str::uuid(),
+            "SurveyId" => $request->input("SurveyId")
+        ]);
+
+        $answers = json_decode($request->input("Answers"));
+        foreach($answers as $answer){
+            $submission->questions()->attach($answer->QuestionId,["Note" => $answer->Note , "Answer" => $answer->Answer]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'new submisstion',
+            'submissions' => $submission->questions(),
+        ]);
     }
 
     /**
@@ -49,16 +67,6 @@ class SubmissionController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Submission  $submission
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Submission $submission)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

@@ -20,7 +20,30 @@
             class="finish"
           >
             <div v-if="finished" class="p-5">
-              <h2>you've completed the survey</h2>
+              <h2>you've completed the survey!</h2>
+              <p>here is your answers you can edit them before submitting.</p>
+
+              <b-form-group
+                v-for="(answer, index) in answers"
+                :key="index"
+                :label="answer.QuestionTitle"
+                v-slot="{ ariaDescribedby }"
+              >
+                <b-form-radio
+                  v-model="answer.Answer"
+                  :aria-describedby="ariaDescribedby"
+                  :name="index"
+                  :value="true"
+                  >Yes</b-form-radio
+                >
+                <b-form-radio
+                  v-model="answer.Answer"
+                  :aria-describedby="ariaDescribedby"
+                  :name="index"
+                  :value="false"
+                  >No</b-form-radio
+                >
+              </b-form-group>
             </div>
           </transition>
           <template #footer>
@@ -141,6 +164,7 @@ export default {
       const answer = {};
       answer["QuestionId"] = this.question.id;
       answer["Answer"] = result;
+      answer["QuestionTitle"] = this.question.Body;
       answer["Note"] = this.note;
       this.answers.push(answer);
       this.note = null;
@@ -207,11 +231,12 @@ export default {
           self.question = response.data.question;
           if (response.data.message == "end of survey") {
             self.finished = true;
+          } else {
+            self.followUp = false;
+            self.nextId = this.nextQuestionId();
+            self.showQuestion = true;
+            self.counter++;
           }
-          self.followUp = false;
-          self.nextId = this.nextQuestionId();
-          self.showQuestion = true;
-          self.counter++;
         })
         .catch((error) => {
           console.log(error);

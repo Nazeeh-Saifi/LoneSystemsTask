@@ -88,7 +88,7 @@ class SurveyController extends Controller
     public function show($id)
     {
         //
-        $survey= Survey::with("submissions")->findOrFail($id);
+        $survey= Survey::with("submissions.questions")->findOrFail($id);
         return response()->json([
             'success' => true,
             'message' => 'one survey with submissions',

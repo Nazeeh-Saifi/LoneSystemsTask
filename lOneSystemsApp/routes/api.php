@@ -30,3 +30,9 @@ Route::apiResources([
 
 Route::get("/surveys/{id}/getFirstQuestion",[SurveyController::class, 'getFirstQuestion']);
 Route::get("/surveys/{surveyId}/questions/{questionId}",[SurveyController::class, 'getNextQuestion']);
+
+
+// charts routes
+Route::get("/getSubmissionsPerMonth",[SubmissionController::class, 'getSubmissionsPerMonth']);
+Route::get("/getSubmissionsPerSurvey",[SubmissionController::class, 'getSubmissionsPerSurvey']);
+

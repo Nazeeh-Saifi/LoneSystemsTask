@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Submission;
+use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class SubmissionController extends Controller
 {
@@ -90,4 +92,83 @@ class SubmissionController extends Controller
     {
         //
     }
+
+    
+
+
+    /**
+     * get number of submissions per month
+     * @param $year
+     * 
+     */
+    public function getSubmissionsPerMonth(){
+        
+        // $number_month =Submission::select(
+        //     DB::raw('count(*) as numberOfSumbission'),
+        //     DB::raw("DATE_FORMAT(created_at,'%M %Y') as month"),
+
+        // )
+        // ->whereYear('created_at', date('2021'))
+        // ->groupBy('month')
+        // ->orderBy('created_at', 'DESC')
+        // ->limit(1);
+
+        
+        $number_month =Submission::select(
+            DB::raw('count(*) as count'),
+            DB::raw("DATE_FORMAT(created_at,'%b %Y') as monthYear"),
+        )
+        ->groupBy('monthYear')
+        ->latest()
+        ->take(12)->get();
+
+        $submissionsCounter = array();
+        $monthYearOfSumbission= array();
+        foreach($number_month as $nm){
+            $submissionsCounter[] = $nm->count;
+            $monthYearOfSumbission[] = $nm->monthYear;
+
+        }
+       
+        return response()->json([
+            'success' => true,
+            'message' => 'Submissions Per Month',
+            'submissionsCounter' => array_reverse($submissionsCounter),
+            'monthYearOfSumbission' => array_reverse($monthYearOfSumbission)
+        ]); 
+
+
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Submissions Per Month',
+        //     'submissionsCounter' => json_encode($numberOfSubmissionString,JSON_NUMERIC_CHECK),
+        //     'monthYearOfSumbission' => json_encode($monthYearOfSumbission,JSON_NUMERIC_CHECK)
+        // ]); 
+
+        
+    }
+
+
+
+
+
+    public function getSubmissionsPerSurvey(){
+        $allSurveys = Survey::with("submissions")->get();
+
+        // $surveysTitles = array();
+        // $surveysNumberOfSubmissions = array();
+        foreach($allSurveys as $survey){
+            $surveysTitles[] = $survey->Title;
+            $surveysNumberOfSubmissions[] = sizeof($survey->submissions);
+        }
+
+         return response()->json([
+            'success' => true,
+            'message' => 'Submissions Per survey',
+            'surveysTitles' => $surveysTitles,
+            'surveysNumberOfSubmissions' => $surveysNumberOfSubmissions
+        ]); 
+
+    }
+
 }

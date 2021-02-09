@@ -14,7 +14,8 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
-// api adress
+
+// api address of the backend modify otherwise
 Vue.prototype.$apiAdress = "http://127.0.0.1:8000";
 
 new Vue({

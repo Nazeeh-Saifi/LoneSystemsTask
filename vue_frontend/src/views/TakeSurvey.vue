@@ -147,12 +147,13 @@ export default {
       formData.set("Answers", JSON.stringify(this.answers));
 
       console.log(this.answers);
+      let self = this;
       axios
         .post(this.$apiAdress + "/api/submissions", formData)
         .then(function (response) {
           console.log(response);
           //TODO show alert
-          // self.goBack();
+          self.goBack();
         })
         .catch(function (error) {
           console.log(error);
@@ -258,6 +259,9 @@ export default {
     },
     goBack() {
       this.$router.push({ name: "Home" });
+    },
+    goBack2() {
+      this.$router.go(-1);
     },
   },
   mounted() {

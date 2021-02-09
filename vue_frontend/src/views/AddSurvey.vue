@@ -306,14 +306,14 @@ export default {
     store() {
       const formData = new FormData();
       formData.set("Title", this.form.title);
-      formData.set("Email", this.updatedEmail);
+      if (this.updatedEmail) formData.set("Email", this.updatedEmail);
       formData.set(
         "Questions",
         JSON.stringify(this.form.questions.filter((q) => q.body))
       );
 
       console.log(this.form);
-      // let self = this;
+      let self = this;
       axios
         .post(this.$apiAdress + "/api/surveys", formData)
         .then(function (response) {

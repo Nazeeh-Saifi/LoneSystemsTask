@@ -5,7 +5,7 @@
         <b-card>
           <template #header>
             <div>
-              <h3>L-one Systems Task:</h3>
+              <h4>L-one Systems Task:</h4>
             </div>
           </template>
 
@@ -14,9 +14,48 @@
             <b-col>
               <b-card>
                 <!-- TODO: Complete the instructions -->
+                <h6>running the backend(lOneSystemsApp):</h6>
                 <ol>
-                  <li>add .env file and insert your database credentials</li>
+                  <li>copy (.env.example) file and rename it (.env)</li>
+                  <li>
+                    insert your database credentials and mail configuration (
+                    I've used mailtrap to test sending emails )
+                  </li>
+                  <li>
+                    open terminal and navigate to lOneSystemsApp directory
+                  </li>
+                  <li>
+                    run the following commands:
+                    <ul>
+                      <li>composer install</li>
+                      <li>
+                        php artisan key:generate
+                        <b>(important step for encryption)</b>
+                      </li>
+                      <li>php artisan migrate</li>
+                      <li>php run serve</li>
+                      <li>the backend should be Up & Running!</li>
+                    </ul>
+                  </li>
                 </ol>
+
+                <h6>running the frontend(vue_frontend):</h6>
+                <ol>
+                  <li>open terminal and navigate to vue_frontend directory</li>
+                  <li>
+                    run the following commands:
+                    <ul>
+                      <li>npm install</li>
+                      <li>npm run serve</li>
+                      <li>the frontend should be Up & Running!</li>
+                    </ul>
+                  </li>
+                </ol>
+                <p>
+                  <b>Note:</b>please make sure that the backend api is running
+                  on this address: http://127.0.0.1:8000 otherwise you need
+                  specify the address in vue_frontend/src/main.js
+                </p>
               </b-card>
             </b-col>
           </b-row>

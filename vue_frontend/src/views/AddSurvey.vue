@@ -127,7 +127,7 @@
             </div>
           </b-card>
 
-          <b-row>
+          <b-row class="mb-4">
             <b-col lg="4">
               <b-button
                 id="next-question-btn"
@@ -141,11 +141,40 @@
             </b-col>
           </b-row>
 
+          <b-row>
+            <!--  :value="true"
+                :unchecked-value="false" -->
+            <b-col lg="12">
+              <b-form-checkbox
+                id="checkbox-1"
+                v-model="emailStatus"
+                name="checkbox-1"
+              >
+                Email Notification
+              </b-form-checkbox>
+            </b-col>
+            <b-col v-if="emailStatus" lg="12">
+              <b-form-group
+                id="email-1"
+                description="enter your email to be notified when new submission occurs."
+                label-for="email-1"
+                valid-feedback="Thank you!"
+                :state="emailValidation"
+              >
+                <b-form-input
+                  :state="emailValidation"
+                  id="email-1"
+                  v-model="email"
+                  trim
+                ></b-form-input>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
           <template #footer>
             <b-button @click="goBack()" variant="danger" class="mr-2">
               Go Home
             </b-button>
-
             <b-button
               v-if="active"
               @click="store()"
@@ -178,6 +207,8 @@ export default {
   data() {
     return {
       index: 1,
+      emailStatus: false,
+      email: null,
       form: {
         title: "",
         questions: [
@@ -193,6 +224,17 @@ export default {
     };
   },
   computed: {
+    updatedEmail() {
+      if (!this.emailStatus) {
+        return null;
+      } else {
+        return this.email;
+      }
+    },
+    emailValidation() {
+      var re = /\S+@\S+\.\S+/;
+      return re.test(this.updatedEmail);
+    },
     validation0() {
       return this.form.title.length > 4;
     },
@@ -202,18 +244,34 @@ export default {
       }
       return "Please enter something.";
     },
-    globalValidation1() {
-      return this.form.questions[0].body.length > 4;
-    },
+    // globalValidation1() {
+    //   return this.form.questions[0].body.length > 4;
+    // },
 
     active() {
-      return this.validation0 && this.questionsValidation;
+      return (
+        this.validation0 &&
+        this.questionsValidation &&
+        (!this.emailStatus || this.emailValidation)
+      );
     },
     questionsValidation() {
       return this.form.questions.filter((q) => q.body).length > 0;
     },
   },
   methods: {
+    /* emptyEmail(checked) {
+      console.log(checked);
+      if (checked) {
+        console.log("checked");
+        this.email = null;
+      }
+      if (!checked) {
+        console.log("notchecked");
+
+        this.email = null;
+      }
+    }, */
     addNextQuestion() {
       this.form.questions.push({
         // id: this.form.questions.length + 1,
@@ -248,6 +306,7 @@ export default {
     store() {
       const formData = new FormData();
       formData.set("Title", this.form.title);
+      formData.set("Email", this.updatedEmail);
       formData.set(
         "Questions",
         JSON.stringify(this.form.questions.filter((q) => q.body))

@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Submission;
 use App\Models\Survey;
+use App\Mail\NewSubmission;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 
 class SubmissionController extends Controller
 {
@@ -52,10 +55,18 @@ class SubmissionController extends Controller
             $submission->questions()->attach($answer->QuestionId,["Note" => $answer->Note , "Answer" => $answer->Answer]);
         }
 
+        $survey = Survey::findOrFail($request->input("SurveyId"));
+        if(isset($survey->email)){
+            Mail::to($survey)->queue(new NewSubmission($answers,$survey->Title));
+            // Mail::to($survey)->queue(new NewSubmission());
+
+        }
         return response()->json([
             'success' => true,
             'message' => 'new submisstion',
-            'submissions' => $submission->questions(),
+            'submissions' => $submission->questions,
+            'answers' => $answers,
+
         ]);
     }
 
@@ -156,8 +167,8 @@ class SubmissionController extends Controller
     public function getSubmissionsPerSurvey(){
         $allSurveys = Survey::with("submissions")->get();
 
-        // $surveysTitles = array();
-        // $surveysNumberOfSubmissions = array();
+        $surveysTitles = array();
+        $surveysNumberOfSubmissions = array();
         foreach($allSurveys as $survey){
             $surveysTitles[] = $survey->Title;
             $surveysNumberOfSubmissions[] = sizeof($survey->submissions);

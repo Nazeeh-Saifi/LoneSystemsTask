@@ -36,11 +36,13 @@ class SurveyController extends Controller
     {
         $validatedRequest = $request->validate([
             "Title" => "required|max:255",
+            "Email" => "required|email",
             "Questions" => "required",
         ]);
         
         $newSurvey = Survey::create([
-            "Title" => $request->input("Title")
+            "Title" => $request->input("Title"),
+            "email" => $request->input("Email")
         ]);
 
         $questions = json_decode($request->input("Questions"));

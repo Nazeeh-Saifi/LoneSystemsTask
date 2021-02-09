@@ -10,6 +10,9 @@ class Question extends Model
     use HasFactory;
     protected $guarded = ['id'];  
 
+    // protected $casts = [
+    //     "questions.pivot.note" => "encrypted"
+    // ];
     public function survey(){
         return $this->belongsTo("App\Models\Survey","SurveyId");
     }

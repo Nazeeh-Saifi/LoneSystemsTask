@@ -32,14 +32,14 @@
                 <b-form-radio
                   v-model="answer.Answer"
                   :aria-describedby="ariaDescribedby"
-                  :name="index"
+                  :name="'radio' + index"
                   :value="true"
                   >Yes</b-form-radio
                 >
                 <b-form-radio
                   v-model="answer.Answer"
                   :aria-describedby="ariaDescribedby"
-                  :name="index"
+                  :name="'radio' + index"
                   :value="false"
                   >No</b-form-radio
                 >

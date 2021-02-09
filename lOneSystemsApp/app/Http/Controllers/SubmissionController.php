@@ -7,6 +7,7 @@ use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
 
 class SubmissionController extends Controller
 {

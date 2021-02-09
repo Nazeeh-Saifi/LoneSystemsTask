@@ -72,6 +72,7 @@ export default {
         QuestionId: question.id,
         Question: question.Body,
         Answer: question.pivot.Answer == 0 ? "No" : "Yes",
+        Note: question.pivot.Note ? question.pivot.Note : "null",
       }));
       console.log("json:", jsonData);
 
